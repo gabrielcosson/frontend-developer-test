@@ -2,6 +2,10 @@ import "./App.css";
 import {
   Avatar,
   Box,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Paper,
   Table,
   TableBody,
@@ -31,17 +35,67 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import SettingsIcon from "@mui/icons-material/Settings";
 import BadgeIcon from "@mui/icons-material/Badge";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 function App() {
-  const rows = [
-    {
-      id: 1,
-      name: "Tiger Nixon",
-      salary: 320800.0,
-      age: 24,
-      image: "tixon.png",
-    },
-  ];
+  const [employeeId, setEmployeeId] = useState("");
+  const [employees, setEmployees] = useState([]);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    axios
+      .get("https://dummy.restapiexample.com/api/v1/employees")
+      .then((res) => {
+        setEmployees(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err.response.data);
+      });
+  }, []);
+
+  const handleSearch = () => {
+    if (employeeId !== "") {
+      axios
+        .get("https://dummy.restapiexample.com/api/v1/employee/" + employeeId)
+        .then((res) => {
+          if (res.data.data !== null) {
+            setEmployees([res.data.data]);
+          } else {
+            setEmployees([
+              {
+                id: "null",
+                employee_name: "null",
+                employee_salary: "null",
+                employee_age: "null",
+                profile_image: "null",
+              },
+            ]);
+          }
+          setEmployees([res.data.data]);
+        })
+        .catch((err) => {
+          console.log(err.response.data);
+          setErrorMessage(err.response.data.message);
+          setOpenDialog(true);
+        });
+    } else {
+      axios
+        .get("https://dummy.restapiexample.com/api/v1/employees")
+        .then((res) => {
+          setEmployees(res.data.data);
+        })
+        .catch((err) => {
+          setErrorMessage(err.response.data.message);
+          setOpenDialog(true);
+        });
+    }
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
 
   return (
     <div className="App">
@@ -164,8 +218,14 @@ function App() {
               variant="outlined"
               label="Employee ID"
               type="number"
+              value={employeeId}
+              onChange={(x) => setEmployeeId(x.target.value)}
             />
-            <StyledButton variant="contained" startIcon={<SearchIcon />}>
+            <StyledButton
+              variant="contained"
+              onClick={handleSearch}
+              startIcon={<SearchIcon />}
+            >
               Search
             </StyledButton>
           </Box>
@@ -192,24 +252,33 @@ function App() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row) => (
+                {employees.map((employee) => (
                   <TableRow
-                    key={row.id}
+                    key={employee.id}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
                     <TableCell component="th" scope="row">
-                      {row.id}
+                      {employee.id}
                     </TableCell>
-                    <TableCell>{row.name}</TableCell>
-                    <TableCell>{row.salary}</TableCell>
-                    <TableCell>{row.age}</TableCell>
-                    <TableCell>{row.image}</TableCell>
+                    <TableCell>{employee.employee_name}</TableCell>
+                    <TableCell>{employee.employee_salary}</TableCell>
+                    <TableCell>{employee.employee_age}</TableCell>
+                    <TableCell>{employee.profile_image}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
           </TableContainer>
         </StyledDashboard>
+
+        <Dialog open={openDialog} onClose={handleCloseDialog}>
+          <DialogTitle id="alert-dialog-title">{"Request Failed"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              {errorMessage}
+            </DialogContentText>
+          </DialogContent>
+        </Dialog>
       </Box>
     </div>
   );
