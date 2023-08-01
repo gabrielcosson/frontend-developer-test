@@ -26,16 +26,23 @@ import { StyledDrawer } from "./components/StyledDrawer";
 import SearchIcon from "@mui/icons-material/Search";
 import LogoWhite from "../src/assets/logo-white.png";
 import ProfilePicture from "../src/assets/profile-picture.png";
+import BrandImage from "../src/assets/brand-image.png";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import SettingsIcon from "@mui/icons-material/Settings";
 import BadgeIcon from "@mui/icons-material/Badge";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
-const rows = [
-  { id: 1, name: "Tiger Nixon", salary: 320800.0, age: 24, image: "tixon.png" },
-];
-
 function App() {
+  const rows = [
+    {
+      id: 1,
+      name: "Tiger Nixon",
+      salary: 320800.0,
+      age: 24,
+      image: "tixon.png",
+    },
+  ];
+
   return (
     <div className="App">
       <StyledHeader
@@ -56,7 +63,17 @@ function App() {
       >
         <StyledDrawer variant="permanent">
           <Toolbar />
-
+          <img
+            style={{
+              width: "80%",
+              marginRight: "auto",
+              marginLeft: "auto",
+              marginTop: "5%",
+              marginBottom: "5%",
+            }}
+            src={BrandImage}
+            alt="nieves-development"
+          ></img>
           <Avatar
             alt="Gabriel Nieves"
             src={ProfilePicture}
@@ -119,7 +136,6 @@ function App() {
                 </ListItemButton>
               </ListItem>
             </List>
-            <Divider />
           </Box>
         </StyledDrawer>
 
@@ -129,7 +145,8 @@ function App() {
               fontSize: "30px",
               color: "#747474",
               fontWeight: "600",
-              marginBottom: "10px",
+              marginBottom: "1%",
+              marginTop: "2%",
             }}
           >
             Employees List
