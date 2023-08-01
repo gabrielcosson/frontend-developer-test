@@ -31,6 +31,10 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import BadgeIcon from "@mui/icons-material/Badge";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
+const rows = [
+  { id: 1, name: "Tiger Nixon", salary: 320800.0, age: 24, image: "tixon.png" },
+];
+
 function App() {
   return (
     <div className="App">
@@ -120,25 +124,71 @@ function App() {
         </StyledDrawer>
 
         <StyledDashboard>
-          <StyledTextField variant="outlined" label="Email" type="email" />
-          <StyledButton startIcon={<SearchIcon />}>Hola</StyledButton>
-          <TableContainer component={Paper} variant="outlined">
-            <Table aria-label="demo table">
+          <Typography
+            sx={{
+              fontSize: "30px",
+              color: "#747474",
+              fontWeight: "600",
+              marginBottom: "10px",
+            }}
+          >
+            Employees List
+          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              marginBottom: "50px",
+              alignItems: "center",
+              width: "100%",
+            }}
+          >
+            <StyledTextField
+              variant="outlined"
+              label="Employee ID"
+              type="number"
+            />
+            <StyledButton variant="contained" startIcon={<SearchIcon />}>
+              Search
+            </StyledButton>
+          </Box>
+
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
                 <TableRow>
-                  <TableCell>Dessert</TableCell>
-                  <TableCell>Calories</TableCell>
+                  <TableCell sx={{ fontWeight: "bold", color: "#747474" }}>
+                    Employee ID
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: "bold", color: "#747474" }}>
+                    Name
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: "bold", color: "#747474" }}>
+                    Salary
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: "bold", color: "#747474" }}>
+                    Age
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: "bold", color: "#747474" }}>
+                    Profile Image
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                <TableRow>
-                  <TableCell>Frozen yoghurt</TableCell>
-                  <TableCell>109</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Cupcake</TableCell>
-                  <TableCell>305</TableCell>
-                </TableRow>
+                {rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      {row.id}
+                    </TableCell>
+                    <TableCell>{row.name}</TableCell>
+                    <TableCell>{row.salary}</TableCell>
+                    <TableCell>{row.age}</TableCell>
+                    <TableCell>{row.image}</TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </TableContainer>
