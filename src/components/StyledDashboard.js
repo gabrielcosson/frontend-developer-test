@@ -8,4 +8,5 @@ export const StyledDashboard = styled(Box)({
   flexDirection: "column",
   padding: "20px",
   marginTop: "50px",
+  alignItems: "start",
 });
